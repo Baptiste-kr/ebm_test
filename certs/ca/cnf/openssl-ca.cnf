@@ -1,0 +1,90 @@
+#Fichier openssl.cnf
+HOME            = .
+
+[ca]
+default_ca      = CA_default
+
+[CA_default]
+dir             = ca
+certs           = $dir/vault/certs
+new_certs_dir   = $dir/vault/new_certs
+database        = $dir/index.txt
+certificate     = $dir/ca.pem
+serial          = $dir/serial.txt
+private_key     = $dir/cakey.pem
+default_days    = 700
+default_md      = sha256
+crlnumber       = $dir/crlnumber.txt
+default_crl_days = 15
+preserve        = no
+policy          = policy_match
+unique_subject  = no  # Set to 'no' to allow creation of several certificates with same subject.
+
+[policy_match]
+countryName             = match
+stateOrProvinceName     = optional
+localityName            = supplied
+organizationName        = supplied 
+organizationalUnitName  = supplied 
+commonName              = supplied 
+emailAddress            = optional 
+
+[req]
+distinguished_name      = req_distinguished_name
+x509_extensions = CA_ROOT
+
+[req_distinguished_name]
+countryName                     = Country
+countryName_default             = FR
+stateOrProvinceName             = Departement
+stateOrProvinceName_default     = 75
+localityName                    = City
+localityName_default            = Paris
+organizationName        		= Organization
+organizationName_default        = Echosens
+organizationalUnitName  		= Organization Unit
+organizationalUnitName_default  = Fsppe
+commonName                      = Name or URL
+commonName_default              = Echosens CA
+commonName_max                  = 64
+
+[CA_ROOT]
+basicConstraints                = critical,CA:TRUE,pathlen:0
+subjectKeyIdentifier            = hash
+authorityKeyIdentifier          = keyid,issuer:always
+keyUsage                        = critical, keyCertSign, cRLSign
+
+[BOX_EDC]
+subjectKeyIdentifier            = hash
+authorityKeyIdentifier          = keyid,issuer:always
+issuerAltName                   = issuer:copy
+subjectAltName                  = critical,dirName:dir_sect
+basicConstraints                = critical,CA:FALSE
+keyUsage                        = critical,digitalSignature, keyEncipherment
+nsCaRevocationUrl               = http://www.fake_crl_url.fr
+
+[BOX_ENCRYPTION]
+subjectKeyIdentifier            = hash
+authorityKeyIdentifier          = keyid,issuer:always
+issuerAltName                   = issuer:copy
+subjectAltName                  = critical,dirName:dir_sect_encryption
+basicConstraints                = critical,CA:FALSE
+keyUsage                        = critical,digitalSignature, keyEncipherment
+nsCaRevocationUrl               = http://www.fake_crl_url.fr
+nsComment                       = 502f03f3-4b3d-4d2e-9306-163031334cce
+
+[dir_sect]
+C=FR
+O=Echosens
+OU=Fsppe
+CN=Echosens
+ST=France
+L=Paris
+
+[dir_sect_encryption]
+C=FR
+O=Echosens
+OU=FsppeEnc
+CN=Echosens
+ST=France
+L=Paris

@@ -1,0 +1,21 @@
+#Fichier openssl.cnf
+HOME            = .
+
+[req]
+distinguished_name      = req_distinguished_name
+
+[req_distinguished_name]
+countryName                     = Country
+countryName_default             = FR
+stateOrProvinceName             = Departement
+stateOrProvinceName_default     = 75
+localityName                    = City
+localityName_default            = Paris
+organizationName        		= Organization
+organizationName_default        = Echosens
+organizationalUnitName  		= Organization Unit
+organizationalUnitName_default  = Fsppe
+commonName                      = Name or URL
+commonName_default              = Box or Client Certificate
+commonName_max                  = 64
+
